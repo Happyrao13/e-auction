@@ -22,6 +22,14 @@ const carSchema = new mongoose.Schema({
     default: 0
   },
   description: String,
+  photos: [{
+    filename: String,
+    filepath: String,
+    uploadedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
