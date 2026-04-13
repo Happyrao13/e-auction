@@ -73,6 +73,15 @@ The server will start on `http://localhost:5000`
 
 ## API Endpoints
 
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/logout` - Logout user
+- `GET /api/auth/me` - Get current user (protected)
+- `PUT /api/auth/profile` - Update user profile (protected)
+- `DELETE /api/auth/account` - Delete account (soft delete, protected)
+- `DELETE /api/auth/account/permanent` - Permanently delete account (protected)
+
 ### Cars
 - `GET /api/cars` - Get all cars
 - `GET /api/cars/:id` - Get car by ID
@@ -98,15 +107,75 @@ The server will start on `http://localhost:5000`
 ## Health Check
 - `GET /health` - Server health status with worker process ID
 
+## Authentication Usage
+
+### Register a New User
+```bash
+curl -X POST http://localhost:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securePassword123",
+    "phone": "1234567890",
+    "address": "123 Main St"
+  }'
+```
+
+### Login
+```bash
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "securePassword123"
+  }'
+```
+
+**Response includes a JWT token** - use this token for protected endpoints
+
+### Get Current User (Protected)
+```bash
+curl -X GET http://localhost:5000/api/auth/me \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Update Profile (Protected)
+```bash
+curl -X PUT http://localhost:5000/api/auth/profile \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Jane Doe",
+    "phone": "0987654321",
+    "address": "456 Oak Ave"
+  }'
+```
+
+### Delete Account (Protected)
+```bash
+curl -X DELETE http://localhost:5000/api/auth/account \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
 ## Features
 
 ### Core Features
+- **Authentication**: Secure user registration, login, logout with JWT tokens
+- **Password Security**: Bcrypt password hashing for secure password storage
+- **User Management**: Update profile, view account details, delete account
 - **Clustering**: Multi-process server utilizing all CPU cores for better performance
 - **Photo Upload**: Support for uploading up to 5 images per car listing (JPEG, PNG, GIF, WebP, max 5MB)
 - **Payment Processing**: Stripe integration for secure payment handling
-- **User Management**: User registration and profile management
 - **Car Listings**: Create, read, update, and delete car listings with photos
 - **CORS Support**: Cross-origin requests enabled for frontend integration
+
+### Security Features
+- JWT token-based authentication
+- Password hashing with bcryptjs
+- Protected API routes (requires authentication)
+- Soft delete option for accounts (data preservation)
+- Permanent delete option for complete data removal
 
 ### Architecture Improvements
 - Multi-process clustering for scalability
