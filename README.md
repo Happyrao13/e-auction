@@ -5,7 +5,7 @@ A modern car marketplace application built with Node.js/Express backend and Mong
 ## Project Structure
 
 ```
-carscout/
+e-auction/
 ├── BACKEND/
 │   ├── models/          # Database schemas
 │   ├── routes/          # API routes
