@@ -1,4 +1,4 @@
-*e-auction - Car Sales Platform
+## e-auction - Car Sales Platform
 
 A modern car marketplace application built with Node.js/Express backend and MongoDB database.
 
